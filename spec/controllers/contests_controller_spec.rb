@@ -25,10 +25,10 @@ describe ContestsController do
   describe "#create" do
     it "creates a new contest" do
       expect {
-        post :create, params: { contest: { participant_1: "234287sdf8a", participant_2: "asdfasf93842" } }
+        post :create, params: { participant_1: "234287sdf8a", participant_2: "asdfasf93842" }
       }.to change { Contest.all.count }.by(1)
       expect(response).to be_successful
-      
+
       json = JSON.parse(response.body)
       expect(json["participant_1"]).to eq("234287sdf8a")
       expect(json["participant_2"]).to eq("asdfasf93842")
@@ -37,7 +37,7 @@ describe ContestsController do
 
     it "renders an error when sent invalid parameters" do
       expect {
-        post :create, params: { contest: { participant_1: "234287sdf8a" } }
+        post :create, params: { participant_1: "234287sdf8a" }
       }.to_not change { Contest.all.count }
       expect(response.status).to eq(400)
       expect(response.body).to include("participant_2")
