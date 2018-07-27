@@ -30,5 +30,10 @@ describe Contest do
       contest.winner = contest.participant_1
       expect(contest).to be_valid
     end
+
+    it "requires a contest type" do
+      contest.type = nil
+      expect(contest).not_to be_valid
+    end
   end
 end

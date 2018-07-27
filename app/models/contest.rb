@@ -4,7 +4,7 @@ class Contest < ActiveRecord::Base
   after_initialize :set_default_status
 
   validates :status, :inclusion=> { :in => AVAILABLE_STATUSES }
-  validates :participant_1, :participant_2, presence: true
+  validates :participant_1, :participant_2, :type, presence: true
   validate :winner_is_a_participant
 
   def winner_is_a_participant

@@ -1,0 +1,2 @@
+class ChariotRace < Contest
+end

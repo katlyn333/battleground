@@ -25,7 +25,7 @@ describe ContestsController do
   describe "#create" do
     it "creates a new contest" do
       expect {
-        post :create, params: { participant_1: "234287sdf8a", participant_2: "asdfasf93842" }
+        post :create, params: { participant_1: "234287sdf8a", participant_2: "asdfasf93842", type: "ChariotRace" }
       }.to change { Contest.all.count }.by(1)
       expect(response).to be_successful
 
@@ -35,13 +35,23 @@ describe ContestsController do
       expect(json["status"]).to eq("active")
     end
 
-    it "renders an error when sent invalid parameters" do
-      expect {
-        post :create, params: { participant_1: "234287sdf8a" }
-      }.to_not change { Contest.all.count }
-      expect(response.status).to eq(400)
-      expect(response.body).to include("participant_2")
-      expect(response.body).to include("can't be blank")
+    context "when sent invalid params" do
+      it "renders an validation error" do
+        expect {
+          post :create, params: { participant_1: "234287sdf8a", type: "ChariotRace"}
+        }.to_not change { Contest.all.count }
+        expect(response.status).to eq(400)
+        expect(response.body).to include("participant_2")
+        expect(response.body).to include("can't be blank")
+      end
+
+      it "returns a error if the contest type is invalid" do
+        expect {
+          post :create, params: { participant_1: "234287sdf8a", participant_2: "asdfasf93842", type: "FooBar" }
+        }.to_not change { Contest.all.count }
+        expect(response.status).to eq(400)
+        expect(response.body).to include("Invalid contest type")
+      end
     end
   end
 end

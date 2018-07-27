@@ -1,0 +1,2 @@
+class Discus < Contest
+end
